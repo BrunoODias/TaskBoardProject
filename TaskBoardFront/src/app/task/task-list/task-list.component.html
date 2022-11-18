@@ -1,0 +1,43 @@
+<div cdkDropListGroup>
+  <div class="example-container">
+    <h2>Tarefas Pendentes</h2>
+
+    <cdk-drop-list
+      [cdkDropListData]="PendingTasks"
+      (cdkDropListDropped)="ChangeColumnEvent($event)"
+      class="example-list"
+    >
+      <div class="example-box" *ngFor="let item of PendingTasks" cdkDrag>
+        {{ item.Title }}
+      </div>
+    </cdk-drop-list>
+  </div>
+
+  <div class="example-container">
+    <h2>Tarefas Ativas</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="ActiveTasks"
+      (cdkDropListDropped)="ChangeColumnEvent($event)"
+    >
+      <div class="example-box" *ngFor="let item of ActiveTasks" cdkDrag>
+        {{ item.Title }}
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <h2>Tarefas Fechadas</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="ClosedTasks"
+      (cdkDropListDropped)="ChangeColumnEvent($event)"
+    >
+      <div class="example-box" *ngFor="let item of ClosedTasks" cdkDrag>
+        {{ item.Title }}
+      </div>
+    </div>
+  </div>
+</div>
