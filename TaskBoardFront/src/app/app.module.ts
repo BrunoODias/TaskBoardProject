@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TaskApiService } from './task/task-service/task-api.service';
 import { TaskListComponent } from './task/task-list/task-list.component';
-import { DragDropModule } from '@angular/cdk/drag-drop'
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TaskResumeComponent } from './task/task-resume/task-resume.component'
 
 @NgModule({
   declarations: [
     AppComponent,
-    TaskListComponent
+    TaskListComponent,
+    TaskResumeComponent
   ],
   imports: [
     BrowserModule,

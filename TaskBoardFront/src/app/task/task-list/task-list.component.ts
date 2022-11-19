@@ -25,6 +25,9 @@ export class TaskListComponent implements OnInit {
     this.PendingTasks = this.GetTasksWithStatus(0);
     this.ActiveTasks = this.GetTasksWithStatus(1);
     this.ClosedTasks = this.GetTasksWithStatus(2);
+    console.log(this.PendingTasks);
+    console.log(this.ActiveTasks);
+    console.log(this.ClosedTasks);
   }
 
   private GetTasksWithStatus = (status:number):Task[]=>{

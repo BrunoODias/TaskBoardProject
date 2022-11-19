@@ -1,3 +1,86 @@
+<div class="row w-100 mt-0 p-2 m-0" style="background: #e7e7e773">
+  <div class="col-md p-0" style="background: #019587; border-radius: 0.25rem">
+    <div
+      class="row py-2 w-100 m-0 mb-2"
+      style="
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 500;
+        border-bottom: solid 1px #ffffff;
+        color: white;
+      "
+    >
+      <span>Pendentes</span>
+    </div>
+    <div class="row w-100 m-0">
+      <div class="col w-100 px-2">
+        <div class="row w-100 m-0 pb-2">
+          <span style="text-align: end">
+            <button
+              class="btn btn-success px-2 py-1"
+              style="background: #0b5e389c"
+            >
+              Nova
+            </button>
+          </span>
+        </div>
+        <app-task-resume
+          [Task]="task"
+          *ngFor="let task of PendingTasks"
+        ></app-task-resume>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md p-0 mx-2"
+    style="background: #ea1e659c; border-radius: 0.25rem"
+  >
+    <div
+      class="row py-2 w-100 m-0 mb-4"
+      style="
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 500;
+        border-bottom: solid 1px #ffffff;
+        color: white;
+      "
+    >
+      <span>Ativas</span>
+    </div>
+    <div class="row w-100 m-0">
+      <div class="col w-100 px-2">
+        <app-task-resume
+          [Task]="task"
+          *ngFor="let task of ActiveTasks"
+        ></app-task-resume>
+      </div>
+    </div>
+  </div>
+  <div class="col-md p-0" style="background: #9d27b19c; border-radius: 0.25rem">
+    <div
+      class="row py-2 w-100 m-0 mb-4"
+      style="
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 500;
+        border-bottom: solid 1px #ffffff;
+        color: white;
+      "
+    >
+      <span>Concluídas</span>
+    </div>
+    <div class="row w-100 m-0">
+      <div class="col w-100 px-2">
+        <app-task-resume
+          [Task]="task"
+          *ngFor="let task of ClosedTasks"
+        ></app-task-resume>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--     
 <div cdkDropListGroup>
   <div class="example-container">
     <h2>Tarefas Pendentes</h2>
@@ -40,4 +123,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

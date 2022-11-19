@@ -4,6 +4,7 @@ export class Task{
     Description:string = '';
     Responsable:string = '';
     Status:number = -1;
+    Priority: number = 1;
 }
 
 const taskStatus = {

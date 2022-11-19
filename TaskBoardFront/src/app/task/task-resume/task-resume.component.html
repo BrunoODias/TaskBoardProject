@@ -1,0 +1,56 @@
+<div class="card mb-4 m-auto" style="border: solid 1px black; width: 92%">
+  <div
+    class="card-header"
+    style="text-align: center; border-bottom: solid black 1px"
+    [class.task-priority-1]="Task.Priority == 1"
+    [class.task-priority-2]="Task.Priority == 2"
+    [class.task-priority-3]="Task.Priority == 3"
+    [class.task-priority-4]="Task.Priority == 4"
+    [class.task-priority-5]="Task.Priority == 5"
+  >
+    <span style="font-size: 1.1rem">{{ Task.Title }}</span
+    ><span
+      style="
+        position: absolute;
+        right: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+      "
+      >X</span
+    >
+  </div>
+  <div class="card-body" style="font-size: 0.9rem">
+    <p class="m-0 mt-2 p-2" style="background: #ebebeb; border-radius: 0.25rem">
+      <span class="d-flex justify-content-around">
+        <span>Responsável:</span>
+        <span>{{ Task.Responsable }}</span>
+      </span>
+    </p>
+    <p class="m-0 mt-2 p-2" style="background: #ebebeb; border-radius: 0.25rem">
+      <span class="d-flex justify-content-around" style="line-height: 2">
+        <span>Prioridade:</span>
+        <span class="d-flex" style="line-height: initial">
+          <span>
+            <select
+              class="form-select"
+              style="padding: 0.3rem 2rem 0.2rem 0.4rem"
+              (change)="ChangePriority($event)"
+              value="{{ Task.Priority }}"
+            >
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </span>
+          <span
+            style="font-size: 1.2rem; margin-left: 0.3rem; margin-top: 0.2rem"
+          >
+            /5
+          </span>
+        </span>
+      </span>
+    </p>
+  </div>
+</div>

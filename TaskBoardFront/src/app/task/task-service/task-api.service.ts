@@ -18,6 +18,7 @@ export class TaskApiService {
       task.Title = `Título Task ${i}`;
       task.Responsable = `Responsável ${i}`;
       task.Status = i % 3 == 0? TaskStatus.Closed : i % 2 == 0? TaskStatus.Active : TaskStatus.Pending;
+      task.Priority = i % 3 == 0? 1 : i % 2 == 0? 2 : 3;
       this.tasks.push(task);
     }
 
