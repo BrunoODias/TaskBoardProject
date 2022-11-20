@@ -1,15 +1,56 @@
+.card-header{
+    font-weight: 500;
+}
+
 .task-priority-1{
-    background: #ffdfdf !important;
+    background: #ffd0d0 !important;
 }
+.task-priority-1 .card-header{
+    background: #ff9d9d !important;
+}
+
 .task-priority-2{
-    background: #ffb6b6 !important;
+    background: #ffa8a8 !important
 }
+.task-priority-2 .card-header{
+    background: #ff7070 !important
+}
+
 .task-priority-3{
-    background: #ff9a9a !important;
+    background: #fd7171 !important;
 }
+.task-priority-3 .card-header{
+    background: #c54242 !important;
+    color: white;
+}
+
 .task-priority-4{
-    background: #ff7d7d !important;
+    background: #e75a5a !important;
 }
+.task-priority-4 .card-header{
+    background: #9f2c2c !important;
+    color: white;
+}
+
 .task-priority-5{
-    background: #ff4f4f !important;
+    background: #ad3939  !important;
+}
+
+.task-priority-5 .card-header{
+    background: #7c1b1b  !important;
+    color: white;
+}
+
+*{
+    user-select: none;
+}
+
+.card-header{
+    cursor: pointer;
+}
+.card-body{
+    cursor: move;
+}
+.card-body select{
+    cursor: pointer;
 }

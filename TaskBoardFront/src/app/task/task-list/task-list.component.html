@@ -1,13 +1,18 @@
-<div class="row w-100 mt-0 p-2 m-0" style="background: #e7e7e773">
-  <div class="col-md p-0" style="background: #019587; border-radius: 0.25rem">
+<div
+  class="row w-100 mt-0 p-2 m-0"
+  style="background: #bbbbbb"
+  cdkDropListGroup
+>
+  <div class="col-md p-0" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-2"
       style="
         text-align: center;
         font-size: 1.2rem;
         font-weight: 500;
-        border-bottom: solid 1px #ffffff;
+        border-bottom: solid 3px #ffffff;
         color: white;
+        background: #002542;
       "
     >
       <span>Pendentes</span>
@@ -18,109 +23,90 @@
           <span style="text-align: end">
             <button
               class="btn btn-success px-2 py-1"
-              style="background: #0b5e389c"
+              style="background: #002542"
             >
-              Nova
+              <i class="fas fa-plus"></i>
             </button>
           </span>
         </div>
-        <app-task-resume
-          [Task]="task"
-          *ngFor="let task of PendingTasks"
-        ></app-task-resume>
+        <div
+          class="w-100 m-0 p-0"
+          cdkDropList
+          [cdkDropListData]="PendingTasks"
+          (cdkDropListDropped)="ChangeColumnEvent($event)"
+        >
+          <app-task-resume
+            cdkDrag
+            [Task]="task"
+            (OnTaskChangeStatus)="ChangeStatusTaskFromCombo($event)"
+            *ngFor="let task of PendingTasks"
+          ></app-task-resume>
+        </div>
       </div>
     </div>
   </div>
-  <div
-    class="col-md p-0 mx-2"
-    style="background: #ea1e659c; border-radius: 0.25rem"
-  >
+  <div class="col-md p-0 mx-2" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-4"
       style="
         text-align: center;
         font-size: 1.2rem;
         font-weight: 500;
-        border-bottom: solid 1px #ffffff;
+        border-bottom: solid 3px #ffffff;
         color: white;
+        background: #002542;
       "
     >
       <span>Ativas</span>
     </div>
     <div class="row w-100 m-0">
       <div class="col w-100 px-2">
-        <app-task-resume
-          [Task]="task"
-          *ngFor="let task of ActiveTasks"
-        ></app-task-resume>
+        <div
+          class="w-100 m-0 p-0"
+          cdkDropList
+          [cdkDropListData]="ActiveTasks"
+          (cdkDropListDropped)="ChangeColumnEvent($event)"
+        >
+          <app-task-resume
+            cdkDrag
+            [Task]="task"
+            (OnTaskChangeStatus)="ChangeStatusTaskFromCombo($event)"
+            *ngFor="let task of ActiveTasks"
+          ></app-task-resume>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md p-0" style="background: #9d27b19c; border-radius: 0.25rem">
+  <div class="col-md p-0" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-4"
       style="
         text-align: center;
         font-size: 1.2rem;
         font-weight: 500;
-        border-bottom: solid 1px #ffffff;
+        border-bottom: solid 3px #ffffff;
         color: white;
+        background: #002542;
       "
     >
       <span>Concluídas</span>
     </div>
     <div class="row w-100 m-0">
       <div class="col w-100 px-2">
-        <app-task-resume
-          [Task]="task"
-          *ngFor="let task of ClosedTasks"
-        ></app-task-resume>
+        <div
+          class="w-100 m-0 p-0"
+          cdkDropList
+          [cdkDropListData]="ClosedTasks"
+          (cdkDropListDropped)="ChangeColumnEvent($event)"
+        >
+          <app-task-resume
+            cdkDrag
+            [Task]="task"
+            (OnTaskChangeStatus)="ChangeStatusTaskFromCombo($event)"
+            *ngFor="let task of ClosedTasks"
+          ></app-task-resume>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<!--     
-<div cdkDropListGroup>
-  <div class="example-container">
-    <h2>Tarefas Pendentes</h2>
-
-    <cdk-drop-list
-      [cdkDropListData]="PendingTasks"
-      (cdkDropListDropped)="ChangeColumnEvent($event)"
-      class="example-list"
-    >
-      <div class="example-box" *ngFor="let item of PendingTasks" cdkDrag>
-        {{ item.Title }}
-      </div>
-    </cdk-drop-list>
-  </div>
-
-  <div class="example-container">
-    <h2>Tarefas Ativas</h2>
-
-    <div
-      cdkDropList
-      [cdkDropListData]="ActiveTasks"
-      (cdkDropListDropped)="ChangeColumnEvent($event)"
-    >
-      <div class="example-box" *ngFor="let item of ActiveTasks" cdkDrag>
-        {{ item.Title }}
-      </div>
-    </div>
-  </div>
-
-  <div class="example-container">
-    <h2>Tarefas Fechadas</h2>
-
-    <div
-      cdkDropList
-      [cdkDropListData]="ClosedTasks"
-      (cdkDropListDropped)="ChangeColumnEvent($event)"
-    >
-      <div class="example-box" *ngFor="let item of ClosedTasks" cdkDrag>
-        {{ item.Title }}
-      </div>
-    </div>
-  </div>
-</div> -->

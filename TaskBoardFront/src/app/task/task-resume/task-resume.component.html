@@ -1,35 +1,46 @@
-<div class="card mb-4 m-auto" style="border: solid 1px black; width: 92%">
-  <div
-    class="card-header"
-    style="text-align: center; border-bottom: solid black 1px"
-    [class.task-priority-1]="Task.Priority == 1"
-    [class.task-priority-2]="Task.Priority == 2"
-    [class.task-priority-3]="Task.Priority == 3"
-    [class.task-priority-4]="Task.Priority == 4"
-    [class.task-priority-5]="Task.Priority == 5"
-  >
-    <span style="font-size: 1.1rem">{{ Task.Title }}</span
-    ><span
+<div
+  class="card mb-4 m-auto"
+  style="width: 92%"
+  [ngStyle]="{ border: 'solid 2px #' + BorderColor }"
+  [class.task-priority-1]="Task.Priority == 1"
+  [class.task-priority-2]="Task.Priority == 2"
+  [class.task-priority-3]="Task.Priority == 3"
+  [class.task-priority-4]="Task.Priority == 4"
+  [class.task-priority-5]="Task.Priority == 5"
+>
+  <div class="card-header" style="text-align: center">
+    <span style="font-size: 1rem">{{ Task.Title }}</span>
+    <button
+      class="btn"
       style="
+        color: white;
         position: absolute;
-        right: 1rem;
-        font-weight: bold;
-        cursor: pointer;
+        right: -2px;
+        top: -2px;
+        font-size: 19px;
       "
-      >X</span
     >
+      <i class="fas fa-trash-alt"></i>
+    </button>
   </div>
-  <div class="card-body" style="font-size: 0.9rem">
-    <p class="m-0 mt-2 p-2" style="background: #ebebeb; border-radius: 0.25rem">
-      <span class="d-flex justify-content-around">
-        <span>Responsável:</span>
-        <span>{{ Task.Responsable }}</span>
-      </span>
-    </p>
-    <p class="m-0 mt-2 p-2" style="background: #ebebeb; border-radius: 0.25rem">
-      <span class="d-flex justify-content-around" style="line-height: 2">
-        <span>Prioridade:</span>
-        <span class="d-flex" style="line-height: initial">
+  <div class="card-body p-4" style="font-size: 0.9rem">
+    <div
+      style="background-color: white; border-radius: 0.25rem"
+      class="col m-0 p-2"
+    >
+      <div class="row m-0 p-0">
+        <div class="col m-0 p-0">
+          <span>Responsável:</span>
+        </div>
+        <div class="col m-0 p-0">
+          <span>{{ Task.Responsable }}</span>
+        </div>
+      </div>
+      <div class="row m-0 my-2 p-0">
+        <div class="col m-0 p-0">
+          <span>Prioridade:</span>
+        </div>
+        <div class="col m-0 p-0">
           <span>
             <select
               class="form-select"
@@ -44,13 +55,26 @@
               <option value="5">5</option>
             </select>
           </span>
-          <span
-            style="font-size: 1.2rem; margin-left: 0.3rem; margin-top: 0.2rem"
-          >
-            /5
+        </div>
+      </div>
+      <div class="row m-0 p-0">
+        <div class="col m-0 p-0">
+          <span>Status:</span>
+        </div>
+        <div class="col m-0 p-0">
+          <span>
+            <select
+              class="form-select"
+              value="{{ Task.Status }}"
+              (change)="ChangeStatus($event)"
+            >
+              <option value="0">Pendente</option>
+              <option value="1">Ativa</option>
+              <option value="2">Concluída</option>
+            </select>
           </span>
-        </span>
-      </span>
-    </p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
