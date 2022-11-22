@@ -3,7 +3,29 @@
   style="background: #bbbbbb"
   cdkDropListGroup
 >
-  <div class="col-md p-0" style="border-radius: 0.25rem">
+  <ng-template #contentDeletionTask let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Tem certeza que deseja excluir a tarefa?</h4>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.dismiss('Cross click')"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <p>A tarefa '{{ taskToRemove.Title }}' será removida</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" (click)="modal.dismiss('Cross click')">
+        Cancelar
+      </button>
+      <button class="btn btn-success" (click)="DeleteTask(taskToRemove)">
+        Confirmar
+      </button>
+    </div>
+  </ng-template>
+
+  <div class="col-lg p-0" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-2"
       style="
@@ -17,7 +39,7 @@
     >
       <span>Pendentes</span>
     </div>
-    <div class="row w-100 m-0">
+    <div class="row w-100 m-0 h-100">
       <div class="col w-100 px-2">
         <div class="row w-100 m-0 pb-2">
           <span style="text-align: end">
@@ -30,7 +52,7 @@
           </span>
         </div>
         <div
-          class="w-100 m-0 p-0"
+          class="w-100 m-0 p-0 h-100"
           cdkDropList
           [cdkDropListData]="PendingTasks"
           (cdkDropListDropped)="ChangeColumnEvent($event)"
@@ -38,14 +60,16 @@
           <app-task-resume
             cdkDrag
             [Task]="task"
-            (OnTaskChangeStatus)="ChangeStatusTaskFromCombo($event)"
+            (OnTaskChangeStatus)="ChangeStatusFromCombo($event)"
+            (OnTaskChangePriority)="ChangePriorityFromCombo($event)"
+            (OnTaskDeleteClick)="OpenDeleteTaskConfirmation($event)"
             *ngFor="let task of PendingTasks"
           ></app-task-resume>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-md p-0 mx-2" style="border-radius: 0.25rem">
+  <div class="col-lg p-0 px-2" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-4"
       style="
@@ -59,10 +83,10 @@
     >
       <span>Ativas</span>
     </div>
-    <div class="row w-100 m-0">
+    <div class="row w-100 m-0 h-100">
       <div class="col w-100 px-2">
         <div
-          class="w-100 m-0 p-0"
+          class="w-100 m-0 p-0 h-100"
           cdkDropList
           [cdkDropListData]="ActiveTasks"
           (cdkDropListDropped)="ChangeColumnEvent($event)"
@@ -70,14 +94,16 @@
           <app-task-resume
             cdkDrag
             [Task]="task"
-            (OnTaskChangeStatus)="ChangeStatusTaskFromCombo($event)"
+            (OnTaskChangeStatus)="ChangeStatusFromCombo($event)"
+            (OnTaskChangePriority)="ChangePriorityFromCombo($event)"
+            (OnTaskDeleteClick)="OpenDeleteTaskConfirmation($event)"
             *ngFor="let task of ActiveTasks"
           ></app-task-resume>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-md p-0" style="border-radius: 0.25rem">
+  <div class="col-lg p-0" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-4"
       style="
@@ -91,10 +117,10 @@
     >
       <span>Concluídas</span>
     </div>
-    <div class="row w-100 m-0">
+    <div class="row w-100 m-0 h-100">
       <div class="col w-100 px-2">
         <div
-          class="w-100 m-0 p-0"
+          class="w-100 m-0 p-0 h-100"
           cdkDropList
           [cdkDropListData]="ClosedTasks"
           (cdkDropListDropped)="ChangeColumnEvent($event)"
@@ -102,7 +128,9 @@
           <app-task-resume
             cdkDrag
             [Task]="task"
-            (OnTaskChangeStatus)="ChangeStatusTaskFromCombo($event)"
+            (OnTaskChangeStatus)="ChangeStatusFromCombo($event)"
+            (OnTaskChangePriority)="ChangePriorityFromCombo($event)"
+            (OnTaskDeleteClick)="OpenDeleteTaskConfirmation($event)"
             *ngFor="let task of ClosedTasks"
           ></app-task-resume>
         </div>

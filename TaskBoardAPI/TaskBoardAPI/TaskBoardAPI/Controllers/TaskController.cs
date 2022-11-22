@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TaskBoardAPI.Models;
 
 namespace TaskBoardAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
+    [EnableCors("MyPolicy")]
     [ApiController]
     public class TaskController : ControllerBase
     {
@@ -21,9 +24,10 @@ namespace TaskBoardAPI.Controllers
         public Context Context { get; }
 
         [HttpGet]
-        public async Task<List<Models.Task>> Tasks()
+        public async Task<JsonResult> Tasks()
         {
-            return await Context.Tasks.ToListAsync();
+            return new JsonResult(await Context.Tasks.ToListAsync(),
+                new JsonSerializerOptions ());
         }
 
         [HttpGet]
@@ -46,14 +50,15 @@ namespace TaskBoardAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<Models.Task> Edit(Models.Task task)
+        public async Task<JsonResult> Edit(Models.Task task)
         {
             task.Deleted = false;
             task.DeletionTime = null;
             task.CheckValidity(true);
             Context.Update(task);
             await Context.SaveChangesAsync();
-            return task;
+            return new JsonResult(task,
+                new JsonSerializerOptions()); ;
         }
 
         [HttpDelete]

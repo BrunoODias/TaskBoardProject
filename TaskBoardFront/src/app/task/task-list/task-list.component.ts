@@ -1,6 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TaskApiService } from '../task-service/task-api.service';
-import { Task, TaskStatus } from '../models/task-model';
+import { Task } from '../models/task-model';
+import { ToasterService } from 'angular2-toaster';
+
+import {
+  NgbActiveModal,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -20,7 +27,11 @@ export class TaskListComponent implements OnInit {
   ActiveTasks: Task[] = [];
   ClosedTasks: Task[] = [];
 
-  constructor(apiService: TaskApiService) {
+  constructor(
+    apiService: TaskApiService,
+    private _modalService: NgbModal,
+    private toasterService: ToasterService
+  ) {
     this.ApiService = apiService;
   }
 
@@ -30,17 +41,19 @@ export class TaskListComponent implements OnInit {
     this.ClosedTasks = this.GetTasksWithStatus(2);
   }
 
-  async ngOnInit(): Promise<void> {
-    this._tasks = await this.ApiService.GetTasks();
-    this.RefreshTasks();
+  ngOnInit() {
+    this.ApiService.GetTasks().subscribe((tasks) => {
+      this._tasks = tasks;
+      this.RefreshTasks();
+    });
   }
 
   private GetTasksWithStatus = (status: number): Task[] => {
-    return this._tasks.filter((x) => x.Status == status);
+    var tasks = this._tasks.filter((x) => x.Status == status);
+    return tasks;
   };
 
-  async ChangeColumnEvent($event: CdkDragDrop<Task[]>) {
-    var taskId = $event.container.data[$event.previousIndex];
+  ChangeColumnEvent($event: CdkDragDrop<Task[], Task[], any>) {
     if ($event.previousContainer === $event.container) {
       moveItemInArray(
         $event.container.data,
@@ -57,8 +70,8 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  ChangeStatusTaskFromCombo($event: any) {
-    var task = this._tasks.find((x) => x.Id == $event.TaskId);
+  ChangeStatusFromCombo($event: any) {
+    var task = this._tasks.find((x) => x.Id == $event.TaskId) as Task;
     if (task == null) return;
 
     var taskFromArray =
@@ -72,20 +85,65 @@ export class TaskListComponent implements OnInit {
       (x) => x.Id == $event.TaskId
     );
 
+    var oldStatus = task.Status;
     task.Status = $event.NewStatus;
 
-    var taskToArray =
-      task.Status == 0
-        ? this.PendingTasks
-        : task.Status == 1
-        ? this.ActiveTasks
-        : this.ClosedTasks;
+    this.ApiService.UpdateTask(task)
+      .then(() => {
+        var taskToArray =
+          task.Status == 0
+            ? this.PendingTasks
+            : task.Status == 1
+            ? this.ActiveTasks
+            : this.ClosedTasks;
 
-    transferArrayItem(taskFromArray, taskToArray, taskPreviousIndex, 0);
+        transferArrayItem(taskFromArray, taskToArray, taskPreviousIndex, 0);
+      })
+      .catch((er) => {
+        task.Status = oldStatus;
+        alert(er);
+      });
   }
 
-  ChangePriorityTaskFromCombo($event: any) {
-    var task = this._tasks.find((x) => x.Id == $event.TaskId);
-    if (task != null) task.Priority = $event.NewPriority;
+  ChangePriorityFromCombo($event: any) {
+    var task = this._tasks.find((x) => x.Id == $event.TaskId) as Task;
+    if (task == null) return;
+    var newPriority = Number($event.NewPriority);
+
+    this.ApiService.UpdateTask(task)
+      .then(() => {
+        task.Priority = newPriority;
+      })
+      .catch((er) => {
+        alert(er);
+      });
+  }
+
+  taskToRemove: Task;
+  modalTaskDelete: NgbModalRef;
+  @ViewChild('contentDeletionTask') deletionTaskContent: ElementRef;
+  OpenDeleteTaskConfirmation(task: Task) {
+    this.taskToRemove = task;
+    this.modalTaskDelete = this._modalService.open(this.deletionTaskContent);
+  }
+
+  DeleteTask(task: Task) {
+    this.modalTaskDelete.close();
+
+    this.ApiService.DeleteTask(task.Id)
+      .then(() => {
+        this._tasks = this._tasks.filter((x) => x != task);
+        this.RefreshTasks();
+        this.toasterService.pop({
+          type: 'success',
+          title: 'Tarefa excluída com sucesso',
+        });
+      })
+      .catch(() => {
+        this.toasterService.pop({
+          type: 'error',
+          title: 'Erro ao tentar excluir a tarefa',
+        });
+      });
   }
 }

@@ -20,7 +20,7 @@ export class TaskResumeComponent {
   @Output()
   OnTaskChangePriority = new EventEmitter();
   ChangePriority($event: any) {
-    this.Task.Priority = $event.target.value;
+    this.Task.Priority = Number($event.target.value);
     this.OnTaskChangePriority.emit({
       TaskId: this.Task.Id,
       NewPriority: this.Task.Priority,
@@ -32,8 +32,14 @@ export class TaskResumeComponent {
   ChangeStatus($event: any) {
     this.OnTaskChangeStatus.emit({
       TaskId: this.Task.Id,
-      NewStatus: $event.target.value,
+      NewStatus: Number($event.target.value),
     });
-    this.Task.Status = $event.target.value;
+    this.Task.Status = Number($event.target.value);
+  }
+
+  @Output()
+  OnTaskDeleteClick = new EventEmitter();
+  TaskDeleteClick() {
+    this.OnTaskDeleteClick.emit(this.Task);
   }
 }

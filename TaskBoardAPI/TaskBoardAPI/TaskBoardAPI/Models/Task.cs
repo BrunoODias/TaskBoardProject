@@ -11,6 +11,7 @@ namespace TaskBoardAPI.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string Responsable { get; set; }
+        public TaskPriority Priority { get; set; }
         public TaskStatus Status { get; set; }
         public bool Deleted { get; set; }
         public DateTime? DeletionTime { get; set; }
@@ -39,5 +40,13 @@ namespace TaskBoardAPI.Models
         Pending = 0,
         Active = 1,
         Closed = 2
+    }
+    public enum TaskPriority
+    {
+        None = 1,
+        low = 2,
+        Medium = 3,
+        Height = 4,
+        Urgent = 5
     }
 }

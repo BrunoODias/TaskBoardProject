@@ -27,7 +27,8 @@ namespace TaskBoardAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Context>(x => {
+            services.AddDbContext<Context>(x =>
+            {
                 var cnString = Configuration.GetConnectionString("DbConnection");
                 x.UseSqlServer(cnString);
             });
@@ -37,7 +38,16 @@ namespace TaskBoardAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskBoardAPI", Version = "v1" });
             });
-            services.AddCors();
+
+            services.AddCors(x =>
+                x.AddPolicy("MyPolicy",
+                builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                }
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +63,7 @@ namespace TaskBoardAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(x=>x.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+            app.UseCors("MyPolicy");
 
             app.UseAuthorization();
 
