@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TaskApiService } from '../task-service/task-api.service';
-import { Task } from '../models/task-model';
+import { Task, TaskPriority, TaskStatus } from '../models/task-model';
 import { ToasterService } from 'angular2-toaster';
 
 import {
@@ -125,6 +125,77 @@ export class TaskListComponent implements OnInit {
   OpenDeleteTaskConfirmation(task: Task) {
     this.taskToRemove = task;
     this.modalTaskDelete = this._modalService.open(this.deletionTaskContent);
+  }
+
+  CreateNewTask() {
+    this.OpenCreateOrEditModal(new Task());
+  }
+
+  taskToUpdateOrInsert: Task;
+  taskToUpdateOrInsertBeforeChanges: Task;
+  modalCreateOrEdit: NgbModalRef;
+  @ViewChild('createOrEditModal') createOrEditContent: ElementRef;
+  OpenCreateOrEditModal(task: Task) {
+    if (task == null) {
+      task = new Task();
+      task.Priority = TaskPriority.None;
+      task.Status = TaskStatus.Pending;
+    }
+
+    this.taskToUpdateOrInsert = task;
+    this.taskToUpdateOrInsertBeforeChanges = JSON.parse(JSON.stringify(task));
+    this.modalCreateOrEdit = this._modalService.open(this.createOrEditContent);
+  }
+
+  CancelTaskChanges() {
+    this.taskToUpdateOrInsert.CreationTime =
+      this.taskToUpdateOrInsertBeforeChanges.CreationTime;
+    this.taskToUpdateOrInsert.Description =
+      this.taskToUpdateOrInsertBeforeChanges.Description;
+    this.taskToUpdateOrInsert.Priority =
+      this.taskToUpdateOrInsertBeforeChanges.Priority;
+    this.taskToUpdateOrInsert.Responsable =
+      this.taskToUpdateOrInsertBeforeChanges.Responsable;
+    this.taskToUpdateOrInsert.Status =
+      this.taskToUpdateOrInsertBeforeChanges.Status;
+    this.taskToUpdateOrInsert.Title =
+      this.taskToUpdateOrInsertBeforeChanges.Title;
+    this.CloseCreateOrEditModal();
+  }
+
+  CloseCreateOrEditModal() {
+    this.modalCreateOrEdit.close();
+  }
+
+  SaveTask(task: Task) {
+    task.Priority = Number(task.Priority);
+    task.Status = Number(task.Status);
+    this.ApiService.Save(task)
+      .then((taskId) => {
+        if (task.Id == 0) {
+          task.Status = 0;
+          task.Id = taskId;
+          this._tasks.push(task);
+        }
+
+        this.RefreshTasks();
+        this.CloseCreateOrEditModal();
+        this.toasterService.pop({
+          type: 'success',
+          title: `Tarefa ${
+            task.Id == 0 ? 'adicionada' : 'editada'
+          } com sucesso`,
+        });
+        console.log('tarefa salva: ', task);
+      })
+      .catch(() => {
+        this.toasterService.pop({
+          type: 'error',
+          title: `Erro ao tentar ${
+            task.Id == 0 ? 'adicionar' : 'editar'
+          } a tarefa`,
+        });
+      });
   }
 
   DeleteTask(task: Task) {

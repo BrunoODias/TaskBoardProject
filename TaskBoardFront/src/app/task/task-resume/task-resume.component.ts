@@ -42,4 +42,10 @@ export class TaskResumeComponent {
   TaskDeleteClick() {
     this.OnTaskDeleteClick.emit(this.Task);
   }
+
+  @Output()
+  OnTaskTitleClick = new EventEmitter();
+  OpenDetails() {
+    this.OnTaskTitleClick.emit(this.Task);
+  }
 }

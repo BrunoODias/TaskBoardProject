@@ -15,6 +15,7 @@ namespace TaskBoardAPI.Models
         public TaskStatus Status { get; set; }
         public bool Deleted { get; set; }
         public DateTime? DeletionTime { get; set; }
+        public DateTime CreationTime { get; set; }
 
         internal void CheckValidity(bool IsUpdate)
         {

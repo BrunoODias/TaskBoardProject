@@ -8,7 +8,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskResumeComponent } from './task/task-resume/task-resume.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToasterModule } from 'angular2-toaster';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, TaskListComponent, TaskResumeComponent],
@@ -18,7 +19,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     DragDropModule,
     ToasterModule.forRoot(),
-    NoopAnimationsModule,
+    FormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [TaskApiService],
   bootstrap: [AppComponent],

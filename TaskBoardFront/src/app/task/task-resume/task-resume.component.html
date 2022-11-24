@@ -8,7 +8,9 @@
   [class.task-priority-5]="Task.Priority == 5"
 >
   <div class="card-header" style="text-align: center">
-    <span style="font-size: 1rem">{{ Task.Title }}</span>
+    <span style="font-size: 1rem" (click)="OpenDetails()">{{
+      Task.Title
+    }}</span>
     <button
       (click)="TaskDeleteClick()"
       class="btn"
@@ -48,11 +50,11 @@
               value="{{ Task.Priority }}"
               (change)="ChangePriority($event)"
             >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+              <option value="1">Nenhuma</option>
+              <option value="2">Baixa</option>
+              <option value="3">Média</option>
+              <option value="4">Alta</option>
+              <option value="5">Urgente</option>
             </select>
           </span>
         </div>
@@ -68,9 +70,9 @@
               value="{{ Task.Status }}"
               (change)="ChangeStatus($event)"
             >
-              <option value="0">Pendente</option>
-              <option value="1">Ativa</option>
-              <option value="2">Concluída</option>
+              <option value="0" value="0">Pendente</option>
+              <option value="1" value="1">Ativa</option>
+              <option value="2" value="2">Concluída</option>
             </select>
           </span>
         </div>

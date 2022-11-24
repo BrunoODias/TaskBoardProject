@@ -47,4 +47,27 @@ export class TaskApiService {
       }
     });
   }
+
+  Save(task: Task): Promise<number> {
+    return new Promise((resolve, reject) => {
+      try {
+        var req: Observable<Object>;
+        if (task.Id != 0) {
+          this.UpdateTask(task)
+            .then((t) => resolve(t.Id))
+            .catch((er) => reject(er));
+          return;
+        }
+
+        req = this._http.post<Task>(Config.BaseApiURI + `/api/task/new`, task);
+
+        req.subscribe((ot) => {
+          var t = ot as Task;
+          resolve(t.Id);
+        });
+      } catch (ex) {
+        reject(ex);
+      }
+    });
+  }
 }

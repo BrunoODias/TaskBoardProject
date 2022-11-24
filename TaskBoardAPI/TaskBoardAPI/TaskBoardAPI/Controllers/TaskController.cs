@@ -37,16 +37,18 @@ namespace TaskBoardAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<Models.Task> New(Models.Task task)
+        public async Task<JsonResult> New(Models.Task task)
         {
             task.Deleted = false;
             task.Status = Models.TaskStatus.Pending;
             task.DeletionTime = null;
             task.Id = 0;
+            task.CreationTime = DateTime.Now;
             task.CheckValidity(false);
             await Context.Tasks.AddAsync(task);
             await Context.SaveChangesAsync();
-            return task;
+            return new JsonResult(task,
+                new JsonSerializerOptions()); ;
         }
 
         [HttpPut]
@@ -67,16 +69,6 @@ namespace TaskBoardAPI.Controllers
             var task = await Context.Tasks.FindAsync(id);
             task.Deleted = true;
             task.DeletionTime = DateTime.Now;
-            Context.Update(task);
-            await Context.SaveChangesAsync();
-            return task;
-        }
-
-        [HttpPut]
-        public async Task<Models.Task> ChangeStatus(int id, Models.TaskStatus status)
-        {
-            var task = await Context.Tasks.FindAsync(id);
-            task.Status = status;
             Context.Update(task);
             await Context.SaveChangesAsync();
             return task;

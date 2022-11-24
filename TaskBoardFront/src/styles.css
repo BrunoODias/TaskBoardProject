@@ -12,6 +12,15 @@
     src: url("../libs/fontawesome-free-6.2.1-web/webfonts/fa-solid-900.woff2");
 }
 
+@font-face {
+    font-family: JicamaDays;
+    src: url('../libs/Font-JicamaDays/JicamaDays.ttf');
+}
+
 .toast {
     display: block !important;
+}
+
+.no-select{
+    user-select: none;
 }

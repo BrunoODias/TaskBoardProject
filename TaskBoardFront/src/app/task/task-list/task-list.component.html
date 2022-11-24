@@ -1,8 +1,4 @@
-<div
-  class="row w-100 mt-0 p-2 m-0"
-  style="background: #bbbbbb"
-  cdkDropListGroup
->
+<div class="row w-100 mt-0 p-2 m-0" cdkDropListGroup>
   <ng-template #contentDeletionTask let-modal>
     <div class="modal-header">
       <h4 class="modal-title">Tem certeza que deseja excluir a tarefa?</h4>
@@ -25,7 +21,99 @@
     </div>
   </ng-template>
 
-  <div class="col-lg p-0" style="border-radius: 0.25rem">
+  <ng-template class="modal-content" #createOrEditModal>
+    <div class="modal-header p-2">
+      <input
+        class="w-100"
+        style="
+          border: none;
+          overflow: auto;
+          outline: none;
+          box-shadow: none;
+          resize: none;
+          font-size: 1.3rem;
+        "
+        name="Title"
+        [(ngModel)]="taskToUpdateOrInsert.Title"
+      />
+      <button
+        type="button"
+        class="btn-close"
+        (click)="CancelTaskChanges()"
+      ></button>
+    </div>
+    <div class="modal-body" style="height: 22rem">
+      <span
+        style="position: absolute; right: 2rem; top: 0.35rem; font-size: 0.8rem"
+      >
+        {{ taskToUpdateOrInsert.CreationTime | date: "dd/MM/yyyy" }}
+      </span>
+      <textarea
+        style="
+          overflow: auto;
+          outline: none;
+          box-shadow: none;
+          resize: none;
+          font-size: 1rem;
+          height: calc(100% - 10rem);
+          border: solid 1px gray;
+          border-radius: 0.25rem;
+          background: #f3f3f3;
+        "
+        class="w-100 mt-3 p-2"
+        name="Description"
+        [(ngModel)]="taskToUpdateOrInsert.Description"
+      ></textarea>
+
+      <div class="row mt-2">
+        <div class="col-sm-4" style="text-align: center; align-self: center">
+          Responsável
+        </div>
+        <div class="col-sm-8">
+          <input
+            class="form-control"
+            name="Responsable"
+            [(ngModel)]="taskToUpdateOrInsert.Responsable"
+          />
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-sm-4" style="text-align: center; align-self: center">
+          Prioridade
+        </div>
+        <div class="col-sm-8">
+          <select
+            class="form-control"
+            name="Priority"
+            [(ngModel)]="taskToUpdateOrInsert.Priority"
+          >
+            <option value="1" [value]="1">Nenhuma</option>
+            <option value="2" [value]="2">Baixa</option>
+            <option value="3" [value]="3">Média</option>
+            <option value="4" [value]="4">Alta</option>
+            <option value="5" [value]="5">Urgente</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="CancelTaskChanges()"
+      >
+        Fechar</button
+      ><button
+        type="button"
+        class="btn btn-success"
+        (click)="SaveTask(taskToUpdateOrInsert)"
+      >
+        Salvar
+      </button>
+    </div>
+  </ng-template>
+
+  <div class="col-md p-0" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-2"
       style="
@@ -37,13 +125,14 @@
         background: #002542;
       "
     >
-      <span>Pendentes</span>
+      <span class="no-select">Pendentes</span>
     </div>
     <div class="row w-100 m-0 h-100">
       <div class="col w-100 px-2">
         <div class="row w-100 m-0 pb-2">
           <span style="text-align: end">
             <button
+              (click)="CreateNewTask()"
               class="btn btn-success px-2 py-1"
               style="background: #002542"
             >
@@ -63,13 +152,14 @@
             (OnTaskChangeStatus)="ChangeStatusFromCombo($event)"
             (OnTaskChangePriority)="ChangePriorityFromCombo($event)"
             (OnTaskDeleteClick)="OpenDeleteTaskConfirmation($event)"
+            (OnTaskTitleClick)="OpenCreateOrEditModal($event)"
             *ngFor="let task of PendingTasks"
           ></app-task-resume>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg p-0 px-2" style="border-radius: 0.25rem">
+  <div class="col-md p-0 px-2" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-4"
       style="
@@ -81,7 +171,7 @@
         background: #002542;
       "
     >
-      <span>Ativas</span>
+      <span class="no-select">Ativas</span>
     </div>
     <div class="row w-100 m-0 h-100">
       <div class="col w-100 px-2">
@@ -97,13 +187,14 @@
             (OnTaskChangeStatus)="ChangeStatusFromCombo($event)"
             (OnTaskChangePriority)="ChangePriorityFromCombo($event)"
             (OnTaskDeleteClick)="OpenDeleteTaskConfirmation($event)"
+            (OnTaskTitleClick)="OpenCreateOrEditModal($event)"
             *ngFor="let task of ActiveTasks"
           ></app-task-resume>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg p-0" style="border-radius: 0.25rem">
+  <div class="col-md p-0" style="border-radius: 0.25rem">
     <div
       class="row py-2 w-100 m-0 mb-4"
       style="
@@ -115,7 +206,7 @@
         background: #002542;
       "
     >
-      <span>Concluídas</span>
+      <span class="no-select">Concluídas</span>
     </div>
     <div class="row w-100 m-0 h-100">
       <div class="col w-100 px-2">
@@ -131,6 +222,7 @@
             (OnTaskChangeStatus)="ChangeStatusFromCombo($event)"
             (OnTaskChangePriority)="ChangePriorityFromCombo($event)"
             (OnTaskDeleteClick)="OpenDeleteTaskConfirmation($event)"
+            (OnTaskTitleClick)="OpenCreateOrEditModal($event)"
             *ngFor="let task of ClosedTasks"
           ></app-task-resume>
         </div>

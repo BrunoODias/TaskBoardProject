@@ -7,10 +7,15 @@
   <div
     id="page-container"
     class="container-lg p-0 mt-2"
-    style="background: white; border: solid 1px #a5a5a5; border-radius: 0.25rem"
+    style="
+      background: #476277;
+      border: solid 1px #a5a5a5;
+      border-radius: 0.25rem;
+      min-height: calc(100% - 1rem);
+    "
   >
     <nav
-      class="navbar p-2"
+      class="navbar p-2 no-select"
       style="
         background-color: #002542;
         color: white;
@@ -18,7 +23,15 @@
         border-bottom: #a5a5a5 solid 1px;
       "
     >
-      <span class="m-auto" style="font-size: 2rem">Task Board</span>
+      <span class="m-auto"
+        ><i
+          class="fas fa-clipboard-list"
+          style="margin-right: 1rem; font-size: 3rem"
+        ></i
+        ><span style="font-size: 3rem; font-family: JicamaDays"
+          >Task Board</span
+        ></span
+      >
     </nav>
     <app-task-list></app-task-list>
   </div>
